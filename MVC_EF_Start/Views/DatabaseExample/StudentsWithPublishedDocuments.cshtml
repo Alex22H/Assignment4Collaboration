@@ -1,0 +1,34 @@
+﻿@{
+    Layout = null;
+}
+@model List<StudentDocumentViewModel>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Published Students</title>
+</head>
+<body>
+
+    <h2>Students with Published Documents</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model)
+            {
+                <tr>
+                    <td>@student.FirstName</td>
+                    <td>@student.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

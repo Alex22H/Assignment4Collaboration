@@ -26,93 +26,91 @@ namespace MVC_EF_Start.Controllers
         public async Task<ViewResult> DatabaseOperations()
         {
             // CREATE operation
-            Company MyCompany = new Company();
-            MyCompany.Id = "MCOB";
-            MyCompany.name = "ISM";
-            MyCompany.date = "ISM";
-            MyCompany.isEnabled = true;
-            MyCompany.type = "ISM";
-            MyCompany.iexId = "ISM";
+            // Insert dummy data for student
+            var student1 = new Student { StudentFirstName = "John", StudentLastName = "Doe" };
+            var student2 = new Student { StudentFirstName = "Jane", StudentLastName = "Smith" };
+            var student3 = new Student { StudentFirstName = "Bob", StudentLastName = "Johnson" };
+            var student4 = new Student { StudentFirstName = "Alice", StudentLastName = "Williams" };
+            var student5 = new Student { StudentFirstName = "Charlie", StudentLastName = "Brown" };
 
-            Quote MyCompanyQuote1 = new Quote();
-            MyCompanyQuote1.date = "11-23-2018";
-            MyCompanyQuote1.open = 46.13F;
-            MyCompanyQuote1.high = 47.18F;
-            MyCompanyQuote1.low = 44.67F;
-            MyCompanyQuote1.close = 47.01F;
-            MyCompanyQuote1.volume = 37654000;
-            MyCompanyQuote1.unadjustedVolume = 37654000;
-            MyCompanyQuote1.change = 1.43F;
-            MyCompanyQuote1.changePercent = 0.03F;
-            MyCompanyQuote1.vwap = 9.76F;
-            MyCompanyQuote1.label = "Nov 23";
-            MyCompanyQuote1.changeOverTime = 0.56F;
-            MyCompanyQuote1.Company = MyCompany;
+            dbContext.Students.AddRange(student1, student2, student3, student4, student5);
 
-            Quote MyCompanyQuote2 = new Quote();
-            MyCompanyQuote2.date = "11-23-2018";
-            MyCompanyQuote2.open = 46.13F;
-            MyCompanyQuote2.high = 47.18F;
-            MyCompanyQuote2.low = 44.67F;
-            MyCompanyQuote2.close = 47.01F;
-            MyCompanyQuote2.volume = 37654000;
-            MyCompanyQuote2.unadjustedVolume = 37654000;
-            MyCompanyQuote2.change = 1.43F;
-            MyCompanyQuote2.changePercent = 0.03F;
-            MyCompanyQuote2.vwap = 9.76F;
-            MyCompanyQuote2.label = "Nov 23";
-            MyCompanyQuote2.changeOverTime = 0.56F;
-            MyCompanyQuote2.Company = MyCompany;
+            // Insert dummy data for Document
+            var document1 = new Document { Title = "Research Paper 1", ResearchTopic = "Data Science", PublishedDate = new DateTime(2022, 01, 01), StudentID = student1.StudentID };
+            var document2 = new Document { Title = "Thesis 1", ResearchTopic = "Artificial Intelligence", PublishedDate = new DateTime(2022, 01, 01), StudentID = student2.StudentID };
+            var document3 = new Document { Title = "Case Study 1", ResearchTopic = "Data Science", PublishedDate = new DateTime(2022, 01, 01), StudentID = student3.StudentID };
+            var document4 = new Document { Title = "Project Report 1", ResearchTopic = "Artificial Intelligence", PublishedDate = new DateTime(2022, 01, 01), StudentID = student4.StudentID };
+            var document5 = new Document { Title = "Experiment Results", ResearchTopic = "Data Science", PublishedDate = new DateTime(2022, 01, 01), StudentID = student5.StudentID };
 
-            dbContext.Companies.Add(MyCompany);
-            dbContext.Quotes.Add(MyCompanyQuote1);
-            dbContext.Quotes.Add(MyCompanyQuote2);
+            dbContext.Documents.AddRange(document1, document2, document3, document4, document5);
+
+            // Insert dummy data for User
+            var user1 = new User { UserFirstName = "David", UserLastName = "Lee" };
+            var user2 = new User { UserFirstName = "Emily", UserLastName = "Clark" };
+            var user3 = new User { UserFirstName = "Michael", UserLastName = "Wang" };
+            var user4 = new User { UserFirstName = "Sophia", UserLastName = "Garcia" };
+            var user5 = new User { UserFirstName = "Ethan", UserLastName = "Taylor" };
+
+            dbContext.Users.AddRange(user1, user2, user3, user4, user5);
+
+            // Insert dummy data for Download
+            var download1 = new Download { DownloadDate = new DateTime(2022, 11, 22), DocumentID = document1.DocumentID, UserID = user1.UserID };
+            var download2 = new Download { DownloadDate = new DateTime(2022, 12, 08), DocumentID = document2.DocumentID, UserID = user2.UserID };
+            var download3 = new Download { DownloadDate = new DateTime(2022, 05, 24), DocumentID = document3.DocumentID, UserID = user3.UserID };
+            var download4 = new Download { DownloadDate = new DateTime(2022, 07, 23), DocumentID = document4.DocumentID, UserID = user4.UserID };
+            var download5 = new Download { DownloadDate = new DateTime(2022, 09, 18), DocumentID = document5.DocumentID, UserID = user5.UserID };
+
+            dbContext.Downloads.AddRange(download1, download2, download3, download4, download5);
 
             dbContext.SaveChanges();
 
-            // READ operation
-            Company CompanyRead1 = dbContext.Companies
-                                    .Where(c => c.Id == "MCOB")
-                                    .First();
-
-            Company CompanyRead2 = dbContext.Companies
-                                    .Include(c => c.Quotes)
-                                    .Where(c => c.Id == "MCOB")
-                                    .First();
-
-            // UPDATE operation
-            CompanyRead1.iexId = "MCOB";
-            dbContext.Companies.Update(CompanyRead1);
-            //dbContext.SaveChanges();
-            await dbContext.SaveChangesAsync();
-
-            // DELETE operation
-            dbContext.Companies.Remove(CompanyRead1);
             await dbContext.SaveChangesAsync();
 
             return View();
         }
 
-        public ViewResult LINQOperations()
+        public IActionResult StudentsWithPublishedDocuments()
         {
-            Company CompanyRead1 = dbContext.Companies
-                                            .Where(c => c.Id == "MCOB")
-                                            .First();
+            var publishedStudents = dbContext.Documents
+                .Select(sd => new 
+                {
+                    FirstName = sd.Student.StudentFirstName,
+                    LastName = sd.Student.StudentLastName
+                })
+                .ToList();
 
-            Company CompanyRead2 = dbContext.Companies
-                                            .Include(c => c.Quotes)
-                                            .Where(c => c.Id == "MCOB")
-                                            .First();
-
-            Quote Quote1 = dbContext.Companies
-                                    .Include(c => c.Quotes)
-                                    .Where(c => c.Id == "MCOB")
-                                    .FirstOrDefault()
-                                    .Quotes
-                                    .FirstOrDefault();
-
-            return View();
+            return View(publishedStudents);
         }
+
+
+
+        /*
+        public IActionResult pubdocs()
+        {
+            return View(); // Display a form to enter the research topic
+        }
+
+        [HttpPost]
+        public IActionResult pubdocs(string researchTopic)
+        {
+            if (string.IsNullOrEmpty(researchTopic))
+            {
+                ViewData["ErrorMessage"] = "Please enter a research topic.";
+                return View("pubdocs");
+            }
+
+            var studentDocuments = dbContext.Documents
+                .Where(d => d.ResearchTopic == researchTopic)
+                .Select(sd => new
+                {
+                    FirstName = sd.Student.StudentFirstName,
+                    LastName = sd.Student.StudentLastName
+                })
+                .ToList();
+
+            return View(studentDocuments);
+        }
+        */
 
     }
 }

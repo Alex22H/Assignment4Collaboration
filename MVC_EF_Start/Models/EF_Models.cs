@@ -1,40 +1,48 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata;
 
 namespace MVC_EF_Start.Models
 {
-    public class Company
+    public class User
     {
-        public string Id { get; set; }
-        public string name { get; set; }
-        public string date { get; set; }
-        public bool isEnabled { get; set; }
-        public string type { get; set; }
-        public string iexId { get; set; }
-        public List<Quote> Quotes { get; set; }
+        public string UserID { get; set; }
+        public string UserFirstName { get; set; }
+        public string UserLastName { get; set; }
+        public List<Download> Downloads { get; set; }
     }
 
-    public class Quote
+    public class Download
     {
-        public int Id { get; set; }
-        public string date { get; set; }
-        public float open { get; set; }
-        public float high { get; set; }
-        public float low { get; set; }
-        public float close { get; set; }
-        public int volume { get; set; }
-        public int unadjustedVolume { get; set; }
-        public float change { get; set; }
-        public float changePercent { get; set; }
-        public float vwap { get; set; }
-        public string label { get; set; }
-        public float changeOverTime { get; set; }
-        public string ClassDemo { get; set; }
-        public Company Company { get; set; }
+        public string DownloadID { get; set; }
+        public DateTime DownloadDate { get; set; }
+        public string UserID { get; set; }
+        public string DocumentID { get; set; }
+
+        public User User { get; set; }
+        public Document Document { get; set; }
     }
 
-    public class ChartRoot
+    public class Student
     {
-        public Quote[] chart { get; set; }
+        public string StudentID { get; set; }
+        public string StudentFirstName { get; set; }
+        public string StudentLastName { get; set; }
+        public List<Document> Documents { get; set; }
     }
+
+    public class Document
+    {
+        public string DocumentID { get; set; }
+        public string Title { get; set; }
+        public string ResearchTopic { get; set; }
+        public DateTime PublishedDate { get; set; }
+        public string StudentID { get; set; }
+
+        public Student Student { get; set; }
+        public List<Download> Downloads { get; set; }
+    }
+
 }

@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>operations</title>
+</head>
+
+@model List<dynamic>
+
+<h2>Students with Published Documents on Topic</h2>
+
+<form method="get" action="@Url.Action("pubdocs", "DatabaseExample")">
+    <label for="researchTopic">Enter Research Topic:</label>
+    <input type="text" name="researchTopic" id="researchTopic" required />
+    <button type="submit">Search</button>
+</form>
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <p class="text-danger">@ViewData["ErrorMessage"]</p>
+}
+@if (Model != null && Model.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Student Author First Name</th>
+                <th>Student Author Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model)
+            {
+                <tr>
+                    <td>@student.FirstName</td>
+                    <td>@student.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No documents on that topic.</p>
+}
