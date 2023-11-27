@@ -1,0 +1,25 @@
+﻿@model IEnumerable<MVC_EF_Start.Models.Graduate>
+
+@{
+    ViewData["Title"] = "Students With Published Documents By Research Topic";
+}
+
+<h2>Students With Published Documents By Research Topic</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.FirstName</td>
+                <td>@student.LastName</td>
+            </tr>
+        }
+    </tbody>
+</table>

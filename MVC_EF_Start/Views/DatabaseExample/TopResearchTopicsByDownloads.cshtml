@@ -1,0 +1,25 @@
+﻿@model IEnumerable<MVC_EF_Start.Models.ProjectDocument>
+
+@{
+    ViewData["Title"] = "Top Research Topics By Downloads";
+}
+
+<h2>Top Research Topics By Downloads</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Research Topic</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var researchTopic in Model)
+        {
+            <tr>
+                <td>@researchTopic.ResearchTopic</td>
+                <td>@researchTopic.DownloadsCount</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Downloaded Documents By User And Date";
+}
+
+<h2>Downloaded Documents By User And Date</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Document Title</th>
+            <th>Research Topic</th>
+            <th>User Name</th>
+            <th>Download Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var document in Model)
+        {
+            <tr>
+                <td>@document.Title</td>
+                <td>@document.ResearchTopic</td>
+                <td>@document.UserName</td>
+                <td>@document.DownloadDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
